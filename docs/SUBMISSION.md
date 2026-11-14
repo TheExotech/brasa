@@ -8,9 +8,10 @@ Fire managers need to know whether this month's burning is normal. The satellite
 
 ## Links
 - Final project: `https://<github-user>.github.io/<repo>/` (live app) and `https://github.com/<github-user>/<repo>` (code)
-- Demo: 30-second video (YouTube, unlisted or public) or a 7-slide deck (Google Slides, "anyone with the link")
+- Demo: 7-slide deck, ready in `docs/demo-slides.pdf` (upload to Google Slides/Drive, link sharing set to "anyone with the link")
 
 ## Project details (what it does, how it works, benefits)
+- **What is new here.** Existing harmonization stops at one global or regional ratio per platform. BRASA adds (a) cell-level empirical-Bayes multipliers with day/night seasonal terms, (b) published 90 % prediction intervals per converted month from leave-one-year-out residuals, (c) per-platform outage detection against each sensor's own climatology, and (d) an explicit NOAA-20 hand-over path so the record survives S-NPP retirement. All four are shipped, not proposed, and the whole thing runs for any country from one config line.
 - **Who it is for.** Early-warning and emergency-response agencies, land managers, firefighters and scientists, such as CONAE, INPE, provincial fire services and the Philippine DENR / NDRRMC.
 - **What it does.**
   - Pick a region, then draw a polygon, enter coordinates and a radius, or upload a GeoJSON.
