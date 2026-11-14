@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="How BRASA harmonizes MODIS and VIIRS active-fire hotspots: reference-satellite calibration, footprint deduplication, empirical-Bayes shrinkage and leave-one-year-out validation." />
+    <title>BRASA · Method &amp; Validation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="doc">
+    <header class="topbar">
+      <a class="brand" href="./index.html" style="text-decoration:none;color:inherit">
+        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2c2 6 9 9 9 17a9 9 0 0 1-18 0c0-4 2-7 4-9 0 3 1 5 3 6-1-6 0-10 2-14z" fill="url(#lg)"/><defs><linearGradient id="lg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff3d00"/><stop offset="1" stop-color="#ffc400"/></linearGradient></defs></svg>
+        <div><h1>BRASA</h1><p class="tagline">Method &amp; validation</p></div>
+      </a>
+      <div class="top-actions">
+        <label class="sr-only" for="region">Region</label>
+        <select id="region"></select>
+        <a class="btn primary" href="./index.html">Open the calendar →</a>
+      </div>
+    </header>
+
+    <article class="prose">
+      <section class="hero">
+        <p class="eyebrow">Burning Records Across Satellites, Aligned</p>
+        <h2 class="display">One fire record from 2000 to today, whatever satellite saw it.</h2>
+        <p class="lead">MODIS (Terra 2000–, Aqua 2002–) built the longest active-fire record, but it is ending. VIIRS (S-NPP 2012–, NOAA-20/21) carries it forward with 375 m pixels that detect <b>several times more hotspots</b>. Splicing the two creates a fake jump in fire activity. BRASA removes that jump so the calendar shows real patterns, trends and anomalies.</p>
+        <div class="stats" id="hero-stats"></div>
+      </section>
+
+      <section>
+        <h2>1 · Why the raw records cannot be compared</h2>
+        <ul>
+          <li><b>Pixel size.</b> A MODIS pixel is ~1 km at nadir (up to ~2×4.8 km at the scan edge); a VIIRS I-band pixel is 375 m (~7× smaller area). One fire front often lights 1 MODIS pixel but 3–8 VIIRS pixels (Schroeder et al., 2014).</li>
+          <li><b>Sensitivity.</b> VIIRS detects many small/cool agricultural and grassland fires that MODIS misses (Fu et al., 2020).</li>
+          <li><b>Overpass time.</b> Aqua and S-NPP cross at ~13:30/01:30; Terra at ~10:30/22:30 samples a different part of the diurnal fire cycle (Giglio et al., 2006).</li>
+          <li><b>Orbit drift.</b> Aqua began drifting later in July 2021 and Terra earlier since 2020; both reach end of mission in 2026–27.</li>
+          <li>Published raw VIIRS/MODIS ratios range 2.8–11×, ~5× for South America (White, 2023), and vary by region, season and day/night, so <b>no single global factor works</b>.</li>
+        </ul>
+        <div class="card"><h3 class="fig-title">Raw vs harmonized monthly hotspots (<span class="rname"></span>)</h3><div id="fig-break" class="chart"></div>
+          <p class="hint">Raw S-NPP VIIRS (purple) sits far above Aqua MODIS (teal). The harmonized series (orange) follows Aqua during the overlap and continues it after Aqua's orbit drift (2021-07), with no artificial jump.</p></div>
+      </section>
+
+      <section>
+        <h2>2 · The harmonization algorithm</h2>
+        <ol class="steps">
+          <li><b>Filter.</b> FIRMS Standard Processing records only (NRT only after the last SP date). Keep <code>type = 0</code> (presumed vegetation fire), excluding volcanoes, static industrial sources and offshore flares. MODIS confidence ≥ 30; VIIRS confidence nominal/high. NRT records inherit static-source flags from the SP record at ~1 km.</li>
+          <li><b>Footprint-equivalent deduplication.</b> Every detection is snapped to a 0.01° (~1 km) cell; one count per cell × day × day/night × platform (an <i>active-fire cell-day</i>). This removes the 375 m-vs-1 km pixel multiplicity, bow-tie duplicates and repeat looks from overlapping orbits.</li>
+          <li><b>Reference satellite.</b> As INPE does for Brazil's official hotspot series, the record is expressed in <b>Aqua-MODIS-equivalent</b> units: Aqua shares the 13:30 orbit with VIIRS and spans 2002–2026. Users can switch to VIIRS-equivalent units.</li>
+          <li><b>Calibration on the stable overlap</b> (2012-02 to 2021-06, before Aqua drift; months where either sensor has an outage are excluded):
+            <div class="formula">E[Aqua] = r<sub>dn</sub>(month) · θ<sub>cell,dn</sub> · VIIRS</div>
+            <ul>
+              <li><code>r<sub>dn</sub></code>: regional ratio, fitted separately for day and night;</li>
+              <li><code>r<sub>dn</sub>(month)</code>: seasonal ratio, shrunk toward the annual ratio with 50 pseudo-counts;</li>
+              <li><code>θ</code>: per-0.5° cell multiplier with empirical-Bayes (Poisson–gamma) shrinkage (Clayton &amp; Kaldor, 1987; Marshall, 1991): data-rich cells keep their own ratio, sparse cells borrow from the region.</li>
+            </ul>
+            Terra → Aqua is calibrated the same way on 2003–2019 to extend the record back to Nov 2000.</li>
+          <li><b>Assembly.</b> Terra→Aqua-eq (2000-11 … 2002-06) · Aqua observed (2002-07 … 2021-06) · VIIRS→Aqua-eq (2021-07 … today). If S-NPP has an outage in a month, observed Aqua is used and the month is flagged.</li>
+          <li><b>Uncertainty.</b> 90 % prediction intervals for every converted month come from the empirical distribution of leave-one-year-out residuals, binned by count size (so small AOIs get honestly wider intervals).</li>
+          <li><b>Anomalies.</b> Per calendar month, the median of a user-selected baseline (default 2003–2022, the target year left out), percentile rank, robust z-score and log<sub>2</sub> ratio. Months where both value and median are &lt; 3 are not coloured as anomalies.</li>
+        </ol>
+        <div class="card" id="cal-card"><h3 class="fig-title">Fitted calibration (<span class="rname"></span>)</h3><div id="calib"></div><div id="fig-season" class="chart"></div></div>
+      </section>
+
+      <section>
+        <h2>3 · Validation</h2>
+        <p>Leave-one-year-out cross-validation over the overlap: each year is predicted from VIIRS with a model fitted on the other years, then compared with the Aqua observation. All models are scored on the same deduplicated Aqua target, at region-month and 0.5°-cell-month level.</p>
+        <div class="card"><h3 class="fig-title">VIIRS → Aqua, leave-one-year-out (<span class="rname"></span>)</h3><div class="table-wrap" id="val-v"></div></div>
+        <div class="card"><h3 class="fig-title">Terra → Aqua, leave-one-year-out (<span class="rname"></span>)</h3><div class="table-wrap" id="val-t"></div></div>
+        <p class="hint">bias = Σpred/Σobs − 1 · MAE and R² on log(1+count) · Spearman ρ of the monthly series. <b>N0</b> splices raw VIIRS without correction: the bias it shows is the artificial jump harmonization removes.</p>
+        <div class="card"><h3 class="fig-title">Aqua orbit-drift diagnostic</h3><div id="drift"></div>
+          <p class="hint">Observed (drifting) Aqua ÷ VIIRS-derived Aqua-equivalent after 2021-07. Year-to-year departures from 1 of up to ±20 % show that the drifting Aqua orbit is no longer a stable reference, which is why BRASA switches to VIIRS for this period.</p></div>
+        <div class="card"><h3 class="fig-title">S-NPP → NOAA-20 continuity</h3><div id="j1"></div>
+          <p class="hint">NASA LANCE is moving from S-NPP to NOAA-20/21 (S-NPP NRT delivery stopped on 2 Nov 2026 in our data). BRASA calibrates NOAA-20 to S-NPP on 2024 → present and chains it with S-NPP → Aqua, so the record continues seamlessly.</p></div>
+      </section>
+
+      <section>
+        <h2>4 · Limitations</h2>
+        <ul>
+          <li>Hotspots are fire <i>pixels</i>, not fires or burned area; cloud and smoke can hide fires.</li>
+          <li>Calibration is regional. Very small AOIs inherit regional/cell ratios and have wide intervals (shown in tooltips and CSV).</li>
+          <li>Aggregation uses a 0.1° grid with area-weighted partial cells; hotspot CSV exports are exact to the AOI polygon.</li>
+          <li>Precomputed coverage: Argentina and the Philippines (the pipeline adds any country in one line). The live NRT layer works anywhere.</li>
+          <li>S-NPP is being phased out in favour of NOAA-20/21; the same calibration machinery extends to them (nested ratio).</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>5 · Data, references &amp; credits</h2>
+        <ul class="refs">
+          <li>NASA FIRMS: MODIS Collection 6.1 (MCD14ML) and VIIRS S-NPP 375 m (VNP14IMGT) Standard Processing and NRT. DOIs 10.5067/FIRMS/MODIS/MCD14DL.NRT.0061, 10.5067/FIRMS/VIIRS/VNP14IMGT_NRT.002. <i>We acknowledge the use of data and/or imagery from NASA's Fire Information for Resource Management System (FIRMS) (https://earthdata.nasa.gov/firms), part of NASA's Earth Science Data and Information System (ESDIS).</i></li>
+          <li>NASA GIBS (VIIRS true-colour imagery) · OpenFreeMap / OpenStreetMap contributors · Natural Earth.</li>
+          <li>Schroeder, W. et al. (2014) The New VIIRS 375 m active fire detection data product. <i>RSE</i> 143, 85–96. doi:10.1016/j.rse.2013.12.008</li>
+          <li>Giglio, L., Schroeder, W., Justice, C. (2016) The collection 6 MODIS active fire detection algorithm. <i>RSE</i> 178, 31–41. doi:10.1016/j.rse.2016.02.054</li>
+          <li>Giglio, L., Csiszar, I., Justice, C. (2006) Global distribution and seasonality of active fires as observed with Terra and Aqua MODIS. <i>JGR</i> 111, G02016. doi:10.1029/2005JG000142</li>
+          <li>Csiszar, I. et al. (2014) Active fires from the Suomi NPP VIIRS. <i>JGR Atmos</i> 119, 803–816. doi:10.1002/2013JD020453</li>
+          <li>Li, F. et al. (2018) Comparison of FRP estimates from VIIRS and MODIS. <i>JGR Atmos</i> 123, 4545–4563. doi:10.1029/2017JD027823</li>
+          <li>Fu, Y. et al. (2020) MODIS versus VIIRS fire products in Northeast Asia. <i>Remote Sens.</i> 12, 2870. doi:10.3390/rs12182870</li>
+          <li>Vadrevu, K., Lasko, K. (2018) Intercomparison of MODIS Aqua and VIIRS I-band fires. <i>Remote Sens.</i> 10, 978. doi:10.3390/rs10070978</li>
+          <li>White, B.L.A. (2023) Quantitative differences in detection of fire pixels using Aqua/MODIS and NPP/VIIRS. <i>J. Hyperspectral Remote Sens.</i> 12(6). doi:10.29150/jhrs.v12.6.p379-390</li>
+          <li>INPE Programa Queimadas — reference-satellite methodology (AQUA_M-T).</li>
+          <li>Clayton, D., Kaldor, J. (1987) Empirical Bayes estimates of age-standardized relative risks. <i>Biometrics</i> 43, 671–681 · Marshall, R.J. (1991) Mapping disease and mortality rates using empirical Bayes estimators. <i>Appl. Stat.</i> 40, 283–294.</li>
+          <li>Theil–Sen slope and Mann–Kendall trend test; colour maps: matplotlib inferno/viridis, cividis (Nuñez et al., 2018), ColorBrewer, PuOr diverging.</li>
+        </ul>
+        <p class="hint">Use of AI: code scaffolding, literature search and text drafting were assisted by an AI coding assistant (Claude); all methods, numbers and figures were generated by the open-source pipeline in this repository and checked by the team.</p>
+      </section>
+    </article>
+    <footer class="footer"><p>BRASA is an independent open-source project for the NASA Space Apps Challenge 2026 (“Harmonization of MODIS and VIIRS Hot Spots”). Not an official NASA product.</p></footer>
+    <script type="module" src="/src/method.ts"></script>
+  </body>
+</html>

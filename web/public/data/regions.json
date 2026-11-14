@@ -1,0 +1,30 @@
+[
+ {
+  "id": "argentina",
+  "name": "Argentina",
+  "label": {
+   "en": "Argentina",
+   "es": "Argentina"
+  },
+  "bbox": [
+   -73.6,
+   -55.1,
+   -53.6,
+   -21.7
+  ]
+ },
+ {
+  "id": "philippines",
+  "name": "Philippines",
+  "label": {
+   "en": "Philippines",
+   "es": "Filipinas"
+  },
+  "bbox": [
+   116.9,
+   4.5,
+   126.7,
+   21.2
+  ]
+ }
+]
