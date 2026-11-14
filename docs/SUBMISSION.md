@@ -7,7 +7,7 @@ BRASA: Burning Records Across Satellites, Aligned
 Fire managers need to know whether this month's burning is normal. The satellite record that should answer this is split across two sensors. MODIS has watched fires since 2000 but is retiring. VIIRS detects 5–10× more hotspots, so splicing the records creates a fake +430 % to +900 % surge in fire activity. BRASA harmonizes NASA FIRMS MODIS and VIIRS hotspots into one consistent series, from 2000 to today, in Aqua-MODIS-equivalent units. It uses footprint deduplication, reference-satellite calibration with empirical-Bayes cell ratios, and NOAA-20 continuity as S-NPP retires. Leave-one-year-out validation shows ≈1 % bias and R² ≈ 0.97–0.98, versus R² < 0 for naive splicing. The web app lets anyone draw an area and get a burning-activity calendar with anomalies against the historical median. It also shows the fire season, trends and a plain-language situation summary, and offers CSV/PNG downloads. It is bilingual, colour-blind safe and open source.
 
 ## Links
-- Final project: `https://<github-user>.github.io/<repo>/` (live app) and `https://github.com/<github-user>/<repo>` (code)
+- Final project: `https://theexotech.github.io/brasa/` (live app) and `https://github.com/TheExotech/brasa` (code)
 - Demo: 7-slide deck, ready in `docs/demo-slides.pdf` (upload to Google Slides/Drive, link sharing set to "anyone with the link")
 
 ## Project details (what it does, how it works, benefits)
