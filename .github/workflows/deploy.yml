@@ -30,10 +30,11 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
-        env:
-          # Optional: lets the live NRT layer work without visitors entering a key.
-          # The key becomes public in the bundle; leave the secret unset to require user keys.
-          VITE_FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+        # The FIRMS key used at build time comes from web/.env.production (committed, it is a
+        # free public key and ends up in the bundle anyway). To switch to a repo secret instead:
+        # add secrets.FIRMS_MAP_KEY in GitHub and re-enable the two lines below.
+        # env:
+        #   VITE_FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web/dist
