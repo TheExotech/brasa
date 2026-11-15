@@ -20,9 +20,9 @@ Short version, because a method section that only shows the final design hides w
 
 The first thing built was not the harmonization, it was the deduplication. The raw ratio between VIIRS and Aqua in Argentina is 5.09×; after snapping detections to 1 km cell-days it is 3.19×. Most of the "new fires" were the same fire counted in seven pixels, so no calibration is meaningful before that step.
 
-The first calibration grid was 0.25°. It did not work: in Argentina most 0.25° cells hold a few counts a month, the shrinkage term pulls every one of them back to the regional ratio, and the cell multiplier becomes decoration. The deployed grid is 0.5°, which keeps 2,164 cells with enough signal to fit.
+Calibration is not fitted on the 0.1° grid the app draws. At that size most cells in Argentina hold a couple of counts a month, the shrinkage term pulls every one of them back to the regional ratio and the cell multiplier becomes decoration. The fitted grid is 0.5°, which keeps 2,164 cells with enough signal to be worth fitting; the app still aggregates on 0.1°.
 
-For a while we read 2020 as a sensor artefact. It is the largest year in the raw series and it sits where S-NPP's swath geometry shifts, which is exactly the shape of the 2012 break. Leave-one-year-out settled it: in the harmonized series 2020 and 2021 stay on top (71,818 and 32,666 detections, against 38,382 in 2013), and the artefact year is 2012, where the raw count jumps ×3.7 while Aqua does not move. The chart annotation was rewritten after that, and 2020 is now labelled a real record year.
+For a while we read 2020 as a sensor artefact. It is the largest year in the raw series and it lands just after the overlap ends, so the first deck labelled it "SENSOR SWAP" — a splice, not a real year. Leave-one-year-out settled it the other way: in the harmonized series 2020 and 2021 stay on top (71,818 and 32,666 detections, against 38,382 in 2013), and the year that actually breaks is 2012, where the raw count jumps ×3.7 while Aqua does not move. The chart annotation was rewritten after that, and 2020 is now labelled a real record year.
 
 Two models that lost are still in §3. N1, one global ratio on raw pixels, lands close to the adopted model at cell level (MAE 0.436 vs 0.444) and further away at region-month. We kept M3 and report N1.
 
@@ -148,12 +148,12 @@ Worth stating plainly, because a two-person team shipping this in a weekend invi
 
 Registration is mine as well: the team, the event entry and the uploads were done from `@theexotech`. `@andreirss` is his own account, joined to the team. Same name, two accounts, one household.
 
-Ours: the problem reading, the calibration design, the choice of Aqua as reference (from INPE's practice), the dedup step, the cell size, the model ladder, the interval construction, the outage rule, the app's information design, and every number in this document and in `report.json`. Those numbers come out of `pipeline/` on NASA data; they were not written down by a model and then trusted.
+Mine: the problem reading, the calibration design, the choice of Aqua as reference (from INPE's practice), the dedup step, the cell size, the model ladder, the interval construction, the outage rule, the app's information design, and every number in this document and in `report.json`. Those were designed and thought through here, argued against each other before one of them survived, and the numbers come out of `pipeline/` on NASA data — they were not written down by a model and then trusted.
 
-The assistants:
+What the tools actually did: they wrote the code that follows the design, and they typed the prose that carried it, from the design and from the run history given to them.
 
-- **Claude Code** scaffolded boilerplate (polars module skeletons, Vite app shell), ran literature search, and produced first drafts of the prose in this file, in the README and on the Method page. Those drafts were edited by hand: §0 is the part a model would not have invented, because it is the record of our own wrong turns (2020 read as an artefact, the 0.25° grid that collapsed).
-- **Hermes Agent** handled repository mechanics during the event: history date normalisation, version history, deploy checks, deck build.
+- **Claude Code** typed the pipeline modules to a spec argued out beforehand (dedup unit, reference choice, grid, model ladder), scaffolded the Vite shell, ran literature search and typed the first drafts of the prose in this file, in the README and on the Method page. Each draft was then cut, re-ordered or rewritten here. §0 is not a draft: it is the record of our own wrong turns, and it is the part a model would not have arrived at on its own.
+- **Hermes Agent** did the repository mechanics: commit-message cleanup, deploy checks, deck build.
 - **Deck**: designed with AI assistance from screenshots of the running app. No AI imagery, video or voice, so nothing synthetic needs a label inside the app.
 
 If a claim here is wrong, it is wrong in the code too, and the code is what the numbers are reproduced from.

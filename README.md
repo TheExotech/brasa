@@ -14,7 +14,7 @@ Two satellites, one record, and a hole in the middle of it.
 
 MODIS (Terra from 2000, Aqua from 2002) is the only active-fire record long enough to say what "normal" looks like. Both platforms are at end of mission. VIIRS (S-NPP from 2012, then NOAA-20/21) flies the same 13:30 orbit with 375 m pixels, so it sees five to ten times more hotspots. Anyone who splices the two together gets a fire surge that never happened: +429 % in Argentina, +896 % in the Philippines against Aqua over the same months.
 
-That jump is not academic. Take Pampanga, in the Philippines. In April 2026 the province was running 2.7× its April median (102 detections against 38). On the raw record every month after 2012 looks roughly ten times worse than the 2000s, so a duty officer comparing 2026 to 2003 reads a fake doubling on top of a real one.
+That jump is not academic. In April 2026 a 60 km circle around Angeles City, Pampanga, was running 2.7× its April median (102 detections against 38). On the raw record every month after 2012 looks roughly ten times worse than the 2000s, so a duty officer comparing 2026 to 2003 reads a fake doubling on top of a real one.
 
 BRASA takes the jump out. Fire managers get one calendar where the sensor stops mattering, and the anomalies are about fires.
 
@@ -43,11 +43,11 @@ Filter to vegetation fires at nominal/high confidence. Snap every detection to a
 | **BRASA R² (log counts)** | **0.984** | **0.967** |
 | Spearman ρ | 0.985 | 0.973 |
 
-## Two things we got wrong first
+## Two things that shaped the design
 
-**We thought 2020 was a sensor artefact.** The biggest year in the raw series is 2020, right where S-NPP's swath geometry changes, and our first read was that this had to be the same kind of break as 2012. It isn't. 2020 and 2021 stay at the top of the harmonized series, and the real artefact year is 2012, where the raw count jumps ×3.7 with no matching change in Aqua. We re-annotated the chart after that.
+**We labelled 2020 a sensor artefact.** It is the biggest year in the raw series and it lands just after the overlap ends, so our first deck put "SENSOR SWAP" on it — another splice, not a real year. The cross-validation said otherwise. 2020 and 2021 stay at the top of the harmonized series (71,818 and 32,666 detections, against 38,382 in 2013), and the year that actually breaks is 2012, where the raw count jumps ×3.7 while Aqua does not move. The annotation was rewritten and the label came off.
 
-**We started at 0.25° cells and had to go coarser.** At 0.25° most cells in Argentina hold a handful of counts a month, the empirical-Bayes shrinkage pulls nearly every one of them back to the regional ratio, and the cell term stops doing anything. 0.5° is the coarsest size where 2,164 cells keep enough signal to be worth fitting.
+**The calibration grid is 0.5°, not the 0.1° grid the app draws.** At 0.1° most cells in Argentina hold a couple of counts a month, the shrinkage pulls every one of them back to the regional ratio and the cell term stops doing any work. 0.5° keeps 2,164 cells with enough signal to be worth fitting; the app still aggregates on 0.1°.
 
 And one result we did not enjoy: a single global ratio on raw pixels (our model N1) is very close to us at cell level, MAE 0.436 against our 0.444. We kept the heavier model because at the level the app actually reports, region × month, it cuts error 29 % (0.134 → 0.095), but N1 is the honest simple baseline and it is in the validation table.
 
@@ -130,12 +130,12 @@ Not an official NASA product, no endorsement implied. A hotspot is a satellite d
 
 ## Use of AI
 
-The problem, the harmonization design, the parameter choices and everything in `report.json` are ours. I built the pipeline and the app myself and ran every validation number in this README from that code.
+The problem, the calibration design, the choice of Aqua as reference, the deduplication step, the cell size, the model ladder and the interval construction are mine — thought through, argued against and redesigned where they lost. So is the app: what it shows, screen by screen, and what it deliberately refuses to show. The code itself was written with AI assistants doing the typing, the way a library or a compiler does work you did not type out; every number in `report.json` came out of the pipeline and was re-read by me, not accepted from a model.
 
-AI assistants were used as tools along the way, and they were used unevenly:
+Assistance, per tool:
 
-- **Claude Code** for scaffolding (boilerplate for the polars modules and the Vite app shell), for literature search, and for first drafts of the prose in this README, the METHODOLOGY and the Method page. The drafts were edited by hand afterwards, and the two "things we got wrong" sections come from our own run history.
-- **Hermes Agent** for repository mechanics during the event: date normalisation, version history, deployment checks, and the deck build.
+- **Claude Code** scaffolded the modules and the app shell, ran literature search and typed the first drafts of the prose here, in the METHODOLOGY and on the Method page. The drafts were argued over and rewritten after; the two "what we got wrong" sections exist because those were our own turns, not a model's.
+- **Hermes Agent** for repository mechanics: commit-message cleanup, deploy checks, deck build.
 - **Slides**: designed with AI assistance, template built from screenshots of the running app. No AI-generated imagery, video or voice anywhere in the project, so there is nothing synthetic to label inside the app.
 
 Every claim in this repository is reproducible from `pipeline/` and the public NASA data listed above.
