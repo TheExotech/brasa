@@ -56,7 +56,7 @@ Filter to vegetation fires at nominal/high confidence. Snap every detection to a
 
 ## Two things that shaped the design
 
-**We labelled 2020 a sensor artefact.** It is the biggest year in the raw series and it lands just after the overlap ends, so our first deck put "SENSOR SWAP" on it - another splice, not a real year. The cross-validation said otherwise. 2020 and 2021 stay at the top of the harmonized series (71,818 and 32,666 detections, against 38,382 in 2013), and the year that actually breaks is 2012, where the raw count jumps ×3.7 while Aqua does not move. The annotation was rewritten and the label came off.
+**We labelled 2020 a sensor artefact.** It is the biggest year in the raw series, and both instruments were flying through it, so Aqua saw 2020 directly and a splice cannot be the explanation. Our first deck put "SENSOR SWAP" on it anyway. The cross-validation said otherwise. 2020 and 2021 stay at the top of the harmonized series (71,818 and 32,666 detections, against 38,382 in 2013), and the year that actually breaks is 2012, where the raw count jumps ×3.7 while Aqua does not move. The annotation was rewritten and the label came off.
 
 **The calibration grid is 0.5°, not the 0.1° grid the app draws.** At 0.1° most cells in Argentina hold a couple of counts a month, the shrinkage pulls every one of them back to the regional ratio and the cell term stops doing any work. 0.5° keeps 2,164 cells with enough signal to be worth fitting; the app still aggregates on 0.1°.
 
@@ -64,9 +64,9 @@ And one result we did not enjoy: a single global ratio on raw pixels (our model 
 
 ## Team
 
-Two people behind this, and the code is mine.
+Two people behind this, and the thinking is mine.
 
-**Andrei Tsygankov** ([@theexotech](https://github.com/TheExotech)): found the challenge, read the FIRMS record, worked out the harmonization, wrote the pipeline, the app and the validation, ran the registration and did the uploads. The decisions inside the method are his, from the reference satellite and the dedup rule to the cell size and the model ladder, and each one can be defended on request.
+**Andrei Tsygankov** ([@theexotech](https://github.com/TheExotech)): found the challenge, read the FIRMS record, worked out the harmonization, and had the pipeline and the app settled in his head before a file existed; Claude Code wrote both to that plan. Registration and uploads are his as well. The decisions inside the method are his, from the reference satellite and the dedup rule to the cell size and the model ladder, and each one can be defended on request.
 
 **Andrei Tsygankov Sr.** ([@andreirss](https://github.com/andreirss)): held the scope where it was and kept the deadline real, asked the question that killed three features that looked nice in a list, and read every draft before it went public. When a number looked too good, he said so first, which is why the validation was re-run instead of shipped.
 
@@ -142,11 +142,11 @@ Not an official NASA product, no endorsement implied. A hotspot is a satellite d
 
 ## Use of AI
 
-The problem, the calibration design, the choice of Aqua as reference, the deduplication step, the cell size, the model ladder and the interval construction are mine - thought through, argued against and redesigned where they lost. So is the app: what it shows, screen by screen, and what it deliberately refuses to show. The code itself was written with AI assistants doing the typing, the way a library or a compiler does work you did not type out; every number in `report.json` came out of the pipeline and was re-read by me, not accepted from a model.
+The architecture came first, and it was mine: what the pipeline has to do and in what order, which screens exist and which deliberately do not, how the calibration is set up and why Aqua is the reference. The deduplication step, the cell size, the model ladder and the interval construction were worked out, argued against and redesigned where they lost. Claude Code wrote the code to that plan, the way a compiler does work you did not type out by hand; every number in `report.json` came out of the pipeline and was re-read by me, not accepted from a model.
 
 Assistance, per tool:
 
-- **Claude Code** scaffolded the modules and the app shell, ran literature search and typed the first drafts of the prose here, in the METHODOLOGY and on the Method page. The drafts were argued over and rewritten after; the two "what we got wrong" sections exist because those were our own turns, not a model's.
+- **Claude Code** wrote the modules and the app shell to the plan above, ran literature search and typed the first drafts of the prose here, in the METHODOLOGY and on the Method page. The drafts were argued over and rewritten after; the two "what we got wrong" sections exist because those were our own turns, not a model's.
 - **Hermes Agent** for repository mechanics: repository housekeeping, deploy checks, deck build.
 - **Slides**: the deck is mine in the argument it makes. I decided the opening claim, which figure earns a slide and what each one has to prove, the order they run in, and what got cut when the flow dragged. Claude Code built the template and set the type from that brief and from screenshots of the running app; the layout went through several passes before it held, and the passes were mine to call. No AI imagery, video or voice anywhere, so there is nothing synthetic to label inside the app.
 
