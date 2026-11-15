@@ -2,6 +2,8 @@
 
 **A harmonized MODIS + VIIRS burning activity calendar for any area of interest, 2000 to today.**
 
+**Live demo → https://theexotech.github.io/brasa/** · [Method & validation](https://theexotech.github.io/brasa/method.html)
+
 Built for the NASA Space Apps Challenge 2026 challenge [*Harmonization of MODIS and VIIRS Hot Spots*](https://www.spaceappschallenge.org/2026/challenges/modis-and-viirs-hot-spots/).
 
 > MODIS has watched fires since 2000 but is retiring. VIIRS carries the record forward with pixels that detect **5× (Argentina) to 10× (Philippines) more hotspots**. Splice the two and the fire record shows a fake **+430 % to +900 % jump**. BRASA removes the jump, with **≈1 % bias and R² ≈ 0.97–0.98** in cross-validation. Fire managers get one consistent calendar in which the sensor no longer matters.
@@ -44,7 +46,7 @@ pipeline/            Python data pipeline (polars)
   regions.json       regions to build (add a country in one line)
 web/                 Vite + TypeScript + MapLibre + D3 static app
   public/data/       generated data (committed so Pages can serve it)
-docs/                methodology, submission kit, master prompt
+docs/                methodology (references, validation protocol)
 .github/workflows/   GitHub Pages deployment
 ```
 
