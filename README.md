@@ -70,7 +70,7 @@ Two people behind this, and the code is mine.
 
 **Andrei Tsygankov Sr.** ([@andreirss](https://github.com/andreirss)): held the scope where it was and kept the deadline real, asked the question that killed three features that looked nice in a list, and read every draft before it went public. When a number looked too good, he said so first, which is why the validation was re-run instead of shipped.
 
-Same name, two accounts, one household. Mine is `@theexotech` (team owner, registration, uploads); his is `@andreirss` (joined to the team). One event: Universal.
+Same name, and it is not a duplicate: father and son, one household, two separate accounts. Mine is `@theexotech` (team owner, registration, uploads); his is `@andreirss` (joined to the team). One event: Universal.
 
 ## Build log
 

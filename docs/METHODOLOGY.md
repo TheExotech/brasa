@@ -146,7 +146,7 @@ Worth stating plainly, because a two-person team shipping this in a weekend invi
 
 **How the team worked.** I found the challenge in the list, read what NASA actually publishes (26 years of FIRMS hotspots, two sensor generations, a retirement date), and worked out that the splice was the thing to fix. The method, the pipeline, the app and the validation are mine, and I wrote them. My father kept me pointed at something finishable: he cut the scope when it grew, asked what a fire officer does with the number on screen, made me re-run the validation when I liked a result too much, and read every draft before it went public. His part shows up in a repo that is finished rather than promising, and in claims smaller than the evidence could have been stretched to carry.
 
-Registration is mine as well: the team, the event entry and the uploads were done from `@theexotech`. `@andreirss` is his own account, joined to the team. Same name, two accounts, one household.
+Registration is mine as well: the team, the event entry and the uploads were done from `@theexotech`. `@andreirss` is his own account, joined to the team. The matching name is not a duplicate: father and son, separate accounts, one household, Universal event.
 
 Mine: the problem reading, the calibration design, the choice of Aqua as reference (from INPE's practice), the dedup step, the cell size, the model ladder, the interval construction, the outage rule, the app's information design, and every number in this document and in `report.json`. Those were designed and thought through here, argued against each other before one of them survived, and the numbers come out of `pipeline/` on NASA data - they were not written down by a model and then trusted.
 
