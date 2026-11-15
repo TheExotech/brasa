@@ -6,14 +6,14 @@ Live app: https://theexotech.github.io/brasa/ · Method and validation: https://
 
 Entry for the NASA Space Apps Challenge 2026 challenge *Harmonization of MODIS and VIIRS Hot Spots*. Team BRASA Dynamics, Universal Event.
 
-![BRASA calendar](docs/img/screenshot.jpg)
+<img src="docs/img/cordoba-calendar.jpg" alt="Córdoba, September 2020, in the live app: calendar, anomaly strip and hotspot map" width="880">
 
 ## For judges: a 60-second tour
 
 The app keeps its state in the URL, so every claim in the deck opens on the exact area, month and view it refers to. No account, no setup.
 
-1. **April 2026, 60 km around Angeles City — 102 hotspots against a median of 38, or 2.7×.** [Open it](https://theexotech.github.io/brasa/#r=philippines&v=anomaly&sel=2026-04&aoi=c:120.59,15.15,60). The calendar switches to anomaly colours against the 2003–2022 median, and the strip underneath lists the months at twice the median or more, this one among them.
-2. **Córdoba, September 2020 — the hotspots on the map.** [Open it](https://theexotech.github.io/brasa/#r=argentina&sel=2020-09&aoi=c:-64.40,-31.20,90). Click a cell to see the detections that produced the count, or pull the last three days live from FIRMS.
+1. **April 2026, 60 km around Angeles City: 102 hotspots against a median of 38, or 2.7×.** [Open it](https://theexotech.github.io/brasa/#r=philippines&v=anomaly&sel=2026-04&aoi=c:120.59,15.15,60). The calendar switches to anomaly colours against the 2003–2022 median, and the strip underneath lists the months at twice the median or more, this one among them.
+2. **Córdoba, September 2020. The hotspots on the map.** [Open it](https://theexotech.github.io/brasa/#r=argentina&sel=2020-09&aoi=c:-64.40,-31.20,90). Click a cell to see the detections that produced the count, or pull the last three days live from FIRMS.
 3. **Raw record against harmonized.** [The Method page](https://theexotech.github.io/brasa/method.html#r=argentina) puts both series on one axis and prints the leave-one-year-out table the deck quotes: +429 % → −1.3 % total bias for Argentina, and +896 % → +0.6 % when you switch the page to the Philippines.
 4. **The deck.** [Seven slides as PDF](https://theexotech.github.io/brasa/deck/BRASA-Dynamics-demo.pdf), every figure taken from the running app.
 
