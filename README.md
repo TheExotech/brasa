@@ -53,10 +53,12 @@ And one result we did not enjoy: a single global ratio on raw pixels (our model 
 
 ## Team
 
-- **Andrei Tsygankov** ([@theexotech](https://github.com/TheExotech)): problem framing, method, pipeline, app, validation.
-- **Andrei Tsygankov Sr.** ([@andreirss](https://github.com/andreirss)): team registration, review of results, hosting.
+Two people, and a real split of work.
 
-We are father and son with the same name, on two separate accounts. Not duplicate registrations.
+- **Andrei Tsygankov** ([@theexotech](https://github.com/TheExotech)): found the challenge, read the FIRMS record, built the method, the pipeline, the app and the validation, registered the team, uploaded everything.
+- **Andrei Tsygankov Sr.** ([@andreirss](https://github.com/andreirss)): scope and deadline, reviewed every draft before it went public, pushed back on claims, second pair of eyes on the numbers. Not a coder — he did not write the Python, he is the reason it ships finished.
+
+We have the same name and two accounts. Mine is `@theexotech` (team owner, registration, uploads), his is `@andreirss` (joined to the team). Separate accounts, one household.
 
 ## Build log
 

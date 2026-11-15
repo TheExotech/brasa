@@ -4,13 +4,13 @@
 |---|---|
 | Version | 1.1 · 15 November 2026 |
 | Team | BRASA Dynamics: Andrei Tsygankov (@theexotech), Andrei Tsygankov Sr. (@andreirss) |
-| Roles | framing, method, pipeline, web app and validation: AT; registration, review, hosting: AT Sr. |
+| Roles | AT: challenge research, data reading, method, pipeline, app, validation, team registration. AT Sr.: scope and focus, read every draft before it went public, second pair of eyes on the numbers |
 | Live app | https://theexotech.github.io/brasa/ |
 | Source | https://github.com/TheExotech/brasa |
 | Scope | Universal Challenge, NASA Space Apps Challenge 2026 |
 | Data | NASA FIRMS (MODIS C6.1, VIIRS S-NPP/NOAA-20/21), NASA GIBS, Natural Earth, all open |
 | Reproduce | `README.md` → *Run locally* |
-| AI assistance | see §8 |
+| Written by | ours, with named tools · §8 |
 
 This document explains how BRASA turns raw NASA FIRMS hotspots into one harmonized monthly fire record. The numbers quoted come from `pipeline/out/<Region>/report.json`, which the pipeline regenerates on every run. They are also shown live on the app's *Method & validation* page.
 
@@ -143,6 +143,10 @@ Published raw VIIRS/MODIS ratios range 2.8–11× and depend on biome, season, d
 ## 8. Who wrote what, and where the assistants sat
 
 Worth stating plainly, because a two-person team shipping this in a weekend invites the question.
+
+**How the team worked.** I found the challenge in the list, read what NASA actually publishes (26 years of FIRMS hotspots, two sensor generations, a retirement date), and worked out that the splice was the thing to fix. My father was on the other side of the table the whole time: he cut the scope when it grew, asked what a fire officer does with the number on screen, made me re-run the validation when I liked a result too much, and read every draft before it went public. He is not a coder and did not write any of the Python. He is the reason the thing is finished and the reason the claims are smaller than they could have been.
+
+Registration is mine as well: the team, the event entry and the uploads were done from `@theexotech`. `@andreirss` is his own account, joined to the team. Same name, two accounts, one household.
 
 Ours: the problem reading, the calibration design, the choice of Aqua as reference (from INPE's practice), the dedup step, the cell size, the model ladder, the interval construction, the outage rule, the app's information design, and every number in this document and in `report.json`. Those numbers come out of `pipeline/` on NASA data; they were not written down by a model and then trusted.
 
