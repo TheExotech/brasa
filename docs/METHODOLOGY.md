@@ -2,17 +2,19 @@
 
 | | |
 |---|---|
-| Version | 1.1 · 15 November 2026 |
+| Version | 1.2 · 15 November 2026 |
 | Team | BRASA Dynamics: Andrei Tsygankov (@theexotech), Andrei Tsygankov Sr. (@andreirss) |
 | Roles | AT: challenge research, data reading, method, pipeline, app, validation, team registration. AT Sr.: scope and focus, read every draft before it went public, second pair of eyes on the numbers |
 | Live app | https://theexotech.github.io/brasa/ |
 | Source | https://github.com/TheExotech/brasa |
 | Scope | Universal Challenge, NASA Space Apps Challenge 2026 |
 | Data | NASA FIRMS (MODIS C6.1, VIIRS S-NPP/NOAA-20/21), NASA GIBS, Natural Earth, all open |
-| Reproduce | `README.md` → *Run locally* |
-| Written by | ours, with named tools · §8 |
+| Re-score | `cd pipeline && python harmonize.py Argentina` rewrites `report.json` |
+| Written by | AT, with the tools named in §8 |
 
 This document explains how BRASA turns raw NASA FIRMS hotspots into one harmonized monthly fire record. The numbers quoted come from `pipeline/out/<Region>/report.json`, which the pipeline regenerates on every run. They are also shown live on the app's *Method & validation* page.
+
+None of them are typed in by hand. `harmonize.py` writes that file, the Method page reads it, and `python -m pytest -q` in `pipeline/` covers the parts easiest to get wrong: the dedup unit, the outage rule and the assembly dates. §6 has the data endpoints if you want to rebuild from the archives.
 
 ## 0. How this was built, including the dead ends
 
@@ -112,6 +114,7 @@ Published raw VIIRS/MODIS ratios range 2.8–11× and depend on biome, season, d
 - The Terra → Aqua conversion is good at region level (R² 0.96 Argentina) but weak at cell level, because of the diurnal cycle. It only affects Nov 2000 – Jun 2002.
 - Aqua itself becomes unusable as a reference after 2021-07, and both MODIS platforms end in 2026–27. The 2000–2002 and post-2021 stretches are conversions, not observations, and they are the two weakest parts of the series.
 - 2026 is a partial year and is scored against the same days in past years only; the annual total for 2026 is not comparable to a full year.
+- Two days, two people. Anything that wanted a week of tuning is missing: per-biome ratios, a proper spatial block holdout, a wider reference set than one satellite. §3 says where the model is weakest so nobody has to guess.
 
 ## 5. References
 - Schroeder et al. (2014) *RSE* 143:85–96, doi:10.1016/j.rse.2013.12.008
@@ -139,6 +142,7 @@ Published raw VIIRS/MODIS ratios range 2.8–11× and depend on biome, season, d
 |---|---|---|
 | 1.0 | 15 Nov 2026 | Initial public release, built during the event |
 | 1.1 | 15 Nov 2026 | Added §0 (build history and dead ends), cell-level caveat, expanded limitations, AI section |
+| 1.2 | 15 Nov 2026 | Re-scoring command in front matter, one more limitation, §8 in plainer words |
 
 ## 8. Who wrote what, and where the assistants sat
 
@@ -148,12 +152,12 @@ Worth stating plainly, because a two-person team shipping this in a weekend invi
 
 Registration is mine as well: the team, the event entry and the uploads were done from `@theexotech`. `@andreirss` is his own account, joined to the team. The matching name is not a duplicate: father and son, separate accounts, one household, Universal event.
 
-Mine: the problem reading, the calibration design, the choice of Aqua as reference (from INPE's practice), the dedup step, the cell size, the model ladder, the interval construction, the outage rule, the app's information design, and every number in this document and in `report.json`. Those were designed and thought through here, argued against each other before one of them survived, and the numbers come out of `pipeline/` on NASA data - they were not written down by a model and then trusted.
+Mine, specifically: reading the problem, choosing Aqua as the reference (that one comes from INPE's practice, not from me), the dedup unit, the 0.5° grid, the model ladder, the interval construction, the outage rule, the app's information design, and every number in this file and in `report.json`. Those numbers come out of `pipeline/` on NASA data. They are not typed from a chat window.
 
-What the tools actually did: they wrote the code that follows the design, and they typed the prose that carried it, from the design and from the run history given to them.
+I used assistants hard, and it would be strange to hide it. Claude Code wrote the pipeline modules to specs argued out first (dedup unit, reference choice, grid, model ladder), scaffolded the Vite shell, ran literature search and typed the first drafts of this file, of the README and of the Method page. Every draft was then cut, reordered or rewritten here, and §0 is the part a model would not have produced, because it is our own wrong turns.
 
-- **Claude Code** typed the pipeline modules to a spec argued out beforehand (dedup unit, reference choice, grid, model ladder), scaffolded the Vite shell, ran literature search and typed the first drafts of the prose in this file, in the README and on the Method page. Each draft was then cut, re-ordered or rewritten here. §0 is not a draft: it is the record of our own wrong turns, and it is the part a model would not have arrived at on its own.
-- **Hermes Agent** did the repository mechanics: repository housekeeping, deploy checks, deck build.
-- **Deck**: conceived and structured here. The argument, the slide order, the single figure each slide is built around and what that figure has to prove were laid out first; Claude Code then built the template from that outline and from screenshots of the app, and the result was cut back twice for density. So the deck's decisions are mine and can be answered for slide by slide - what was assisted is the construction, not the reasoning behind it.
+- **Claude Code** as above: modules, shell, literature search, first drafts of prose.
+- **Hermes Agent** on the repository: housekeeping, deploy checks, deck build.
+- **Deck**: structure first, meaning what each slide had to prove and in what order; Claude Code built the template from that outline and from screenshots of the app, and it was cut back twice for density. Slide by slide, the decisions are mine.
 
 If a claim here is wrong, it is wrong in the code too, and the code is what the numbers are reproduced from.
