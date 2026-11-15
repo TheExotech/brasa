@@ -7,8 +7,8 @@
 | Roles | AT: challenge research, data reading, method, pipeline, app, validation, team registration. AT Sr.: scope and focus, read every draft before it went public, second pair of eyes on the numbers |
 | Live app | https://theexotech.github.io/brasa/ |
 | Source | https://github.com/TheExotech/brasa |
-| Scope | Universal Challenge, NASA Space Apps Challenge 2026 |
-| Data | NASA FIRMS (MODIS C6.1, VIIRS S-NPP/NOAA-20/21), NASA GIBS, Natural Earth, all open |
+| Scope | Universal Event, NASA Space Apps Challenge 2026 |
+| Data | NASA FIRMS (MODIS C6.1, VIIRS S-NPP, NOAA-20), NASA GIBS, Natural Earth, all open |
 | Re-score | `cd pipeline && python harmonize.py Argentina` rewrites `report.json` |
 | Written by | AT, with the tools named in §8 |
 
@@ -133,7 +133,7 @@ Published raw VIIRS/MODIS ratios range 2.8–11× and depend on biome, season, d
 
 - FIRMS archive: https://firms.modaps.eosdis.nasa.gov/download/
 - FIRMS Area API: https://firms.modaps.eosdis.nasa.gov/api/area/
-- GIBS basemaps: https://nasa.github.io/gibs-api-docs/
+- GIBS basemaps: https://nasa-gibs.github.io/gibs-api-docs/
 - Natural Earth: https://www.naturalearthdata.com/
 
 ## 7. Version history
