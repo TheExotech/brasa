@@ -136,7 +136,7 @@ Assistance, per tool:
 
 - **Claude Code** scaffolded the modules and the app shell, ran literature search and typed the first drafts of the prose here, in the METHODOLOGY and on the Method page. The drafts were argued over and rewritten after; the two "what we got wrong" sections exist because those were our own turns, not a model's.
 - **Hermes Agent** for repository mechanics: commit-message cleanup, deploy checks, deck build.
-- **Slides**: designed with AI assistance, template built from screenshots of the running app. No AI-generated imagery, video or voice anywhere in the project, so there is nothing synthetic to label inside the app.
+- **Slides**: the deck is mine in the argument it makes. I decided the opening claim, which figure earns a slide and what each one has to prove, the order they run in, and what got cut when the flow dragged. Claude Code built the template and set the type from that brief and from screenshots of the running app; the layout went through several passes before it held, and the passes were mine to call. No AI imagery, video or voice anywhere, so there is nothing synthetic to label inside the app.
 
 Every claim in this repository is reproducible from `pipeline/` and the public NASA data listed above.
 

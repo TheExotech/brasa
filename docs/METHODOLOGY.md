@@ -154,6 +154,6 @@ What the tools actually did: they wrote the code that follows the design, and th
 
 - **Claude Code** typed the pipeline modules to a spec argued out beforehand (dedup unit, reference choice, grid, model ladder), scaffolded the Vite shell, ran literature search and typed the first drafts of the prose in this file, in the README and on the Method page. Each draft was then cut, re-ordered or rewritten here. §0 is not a draft: it is the record of our own wrong turns, and it is the part a model would not have arrived at on its own.
 - **Hermes Agent** did the repository mechanics: commit-message cleanup, deploy checks, deck build.
-- **Deck**: designed with AI assistance from screenshots of the running app. No AI imagery, video or voice, so nothing synthetic needs a label inside the app.
+- **Deck**: conceived and structured here. The argument, the slide order, the single figure each slide is built around and what that figure has to prove were laid out first; Claude Code then built the template from that outline and from screenshots of the app, and the result was cut back twice for density. So the deck's decisions are mine and can be answered for slide by slide — what was assisted is the construction, not the reasoning behind it.
 
 If a claim here is wrong, it is wrong in the code too, and the code is what the numbers are reproduced from.
