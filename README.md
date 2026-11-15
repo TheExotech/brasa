@@ -66,11 +66,11 @@ And one result we did not enjoy: a single global ratio on raw pixels (our model 
 
 Two people behind this, and the thinking is mine.
 
-**Andrei Tsygankov** ([@theexotech](https://github.com/TheExotech)): found the challenge, read the FIRMS record, worked out the harmonization, and had the pipeline and the app settled in his head before a file existed; Claude Code wrote both to that plan. Registration and uploads are his as well. The decisions inside the method are his, from the reference satellite and the dedup rule to the cell size and the model ladder, and each one can be defended on request.
+**@theexotech** (team owner, [GitHub](https://github.com/TheExotech)): found the challenge, read the FIRMS record, worked out the harmonization, and had the pipeline and the app settled in his head before a file existed; Claude Code wrote both to that plan. Registration and uploads are his as well. The decisions inside the method are his, from the reference satellite and the dedup rule to the cell size and the model ladder, and each one can be defended on request.
 
-**Andrei Tsygankov Sr.** (@andreirss on Space Apps): held the scope where it was and kept the deadline real, asked the question that killed three features that looked nice in a list, and read every draft before it went public. When a number looked too good, he said so first, which is why the validation was re-run instead of shipped.
+**@andreirss** (on Space Apps): held the scope where it was and kept the deadline real, asked the question that killed three features that looked nice in a list, and read every draft before it went public. When a number looked too good, he said so first, which is why the validation was re-run instead of shipped.
 
-Same name, and it is not a duplicate: father and son, one household, two separate accounts. Mine is `@theexotech` (team owner, registration, uploads); his is `@andreirss` (joined to the team). One event: Universal.
+Father and son, one household, two separate accounts: `@theexotech` (team owner, registration, uploads) and `@andreirss` (joined to the team). One event: Universal. We use usernames instead of names because one of us is under 18, as the Space Apps Participant Terms ask.
 
 ## Build log
 

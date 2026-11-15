@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | Version | 1.2 · 15 November 2026 |
-| Team | BRASA Dynamics: Andrei Tsygankov (@theexotech), Andrei Tsygankov Sr. (@andreirss) |
-| Roles | AT: challenge research, data reading, method, pipeline, app, validation, team registration. AT Sr.: scope and focus, read every draft before it went public, second pair of eyes on the numbers |
+| Team | BRASA Dynamics: @theexotech (team owner) and @andreirss, father and son; usernames only, as one of us is under 18 |
+| Roles | @theexotech: challenge research, data reading, method, pipeline, app, validation, team registration. @andreirss: scope and focus, read every draft before it went public, second pair of eyes on the numbers |
 | Live app | https://theexotech.github.io/brasa/ |
 | Source | https://github.com/TheExotech/brasa |
 | Scope | Universal Event, NASA Space Apps Challenge 2026 |
@@ -150,7 +150,7 @@ Worth stating plainly, because a two-person team shipping this in a weekend invi
 
 **How the team worked.** I found the challenge in the list, read what NASA actually publishes (26 years of FIRMS hotspots, two sensor generations, a retirement date), and worked out that the splice was the thing to fix. The plan existed in my head before any code did: what the pipeline does in what order, what the app shows and what it refuses to show. Claude Code wrote the code to that plan. My father kept me pointed at something finishable: he cut the scope when it grew, asked what a fire officer does with the number on screen, made me re-run the validation when I liked a result too much, and read every draft before it went public. His part shows up in a repo that is finished rather than promising, and in claims smaller than the evidence could have been stretched to carry.
 
-Registration is mine as well: the team, the event entry and the uploads were done from `@theexotech`. `@andreirss` is his own account, joined to the team. The matching name is not a duplicate: father and son, separate accounts, one household, Universal event.
+Registration is mine as well: the team, the event entry and the uploads were done from `@theexotech`. `@andreirss` is his own account, joined to the team. Father and son, separate accounts, one household, Universal Event.
 
 Mine, specifically: reading the problem, the shape of the pipeline, choosing Aqua as the reference (that one comes from INPE's practice, not from me), the dedup unit, the 0.5° grid, the model ladder, the interval construction, the outage rule, the app's information design, and every number in this file and in `report.json`. Those numbers come out of `pipeline/` on NASA data. They are not typed from a chat window.
 
