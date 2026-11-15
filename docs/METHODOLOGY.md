@@ -1,5 +1,16 @@
 # BRASA methodology
 
+| | |
+|---|---|
+| Version | 1.0 · 15 November 2026 |
+| Team | BRASA — Andrei Tsygankov, Andrei Tsygankov Sr. |
+| Live app | https://theexotech.github.io/brasa/ |
+| Source | https://github.com/TheExotech/brasa |
+| Scope | Universal Challenge, NASA Space Apps Challenge 2026 |
+| Data | NASA FIRMS (MODIS C6.1, VIIRS S-NPP/NOAA-20/21), NASA GIBS, Natural Earth — all open |
+| Reproduce | `README.md` → *Run locally* |
+| AI assistance | Claude Code for scaffolding, literature search and documentation; data, calibration and analysis our own |
+
 This document explains how BRASA turns raw NASA FIRMS hotspots into one harmonized monthly fire record. The numbers quoted come from `pipeline/out/<Region>/report.json`, which the pipeline regenerates on every run. They are also shown live on the app's *Method & validation* page.
 
 ## 1. Problem
@@ -97,3 +108,16 @@ Published raw VIIRS/MODIS ratios range 2.8–11× and depend on biome, season, d
 - Clayton & Kaldor (1987) *Biometrics* 43:671–681
 - Marshall (1991) *Appl. Stat.* 40:283–294
 - INPE Programa Queimadas: reference-satellite (AQUA_M-T) methodology
+
+## 6. Data access
+
+- FIRMS archive: https://firms.modaps.eosdis.nasa.gov/download/
+- FIRMS Area API: https://firms.modaps.eosdis.nasa.gov/api/area/
+- GIBS basemaps: https://nasa.github.io/gibs-api-docs/
+- Natural Earth: https://www.naturalearthdata.com/
+
+## 7. Version history
+
+| Version | Date | Change |
+|---|---|---|
+| 1.0 | 15 Nov 2026 | Initial public release, built during the event |
