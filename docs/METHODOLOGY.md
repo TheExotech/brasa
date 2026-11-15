@@ -2,16 +2,29 @@
 
 | | |
 |---|---|
-| Version | 1.0 · 15 November 2026 |
-| Team | BRASA — Andrei Tsygankov, Andrei Tsygankov Sr. |
+| Version | 1.1 · 15 November 2026 |
+| Team | BRASA Dynamics: Andrei Tsygankov (@theexotech), Andrei Tsygankov Sr. (@andreirss) |
+| Roles | framing, method, pipeline, web app and validation: AT; registration, review, hosting: AT Sr. |
 | Live app | https://theexotech.github.io/brasa/ |
 | Source | https://github.com/TheExotech/brasa |
 | Scope | Universal Challenge, NASA Space Apps Challenge 2026 |
-| Data | NASA FIRMS (MODIS C6.1, VIIRS S-NPP/NOAA-20/21), NASA GIBS, Natural Earth — all open |
+| Data | NASA FIRMS (MODIS C6.1, VIIRS S-NPP/NOAA-20/21), NASA GIBS, Natural Earth, all open |
 | Reproduce | `README.md` → *Run locally* |
-| AI assistance | Claude Code for scaffolding, literature search and documentation; data, calibration and analysis our own |
+| AI assistance | see §8 |
 
 This document explains how BRASA turns raw NASA FIRMS hotspots into one harmonized monthly fire record. The numbers quoted come from `pipeline/out/<Region>/report.json`, which the pipeline regenerates on every run. They are also shown live on the app's *Method & validation* page.
+
+## 0. How this was built, including the dead ends
+
+Short version, because a method section that only shows the final design hides where the decisions came from.
+
+The first thing built was not the harmonization, it was the deduplication. The raw ratio between VIIRS and Aqua in Argentina is 5.09×; after snapping detections to 1 km cell-days it is 3.19×. Most of the "new fires" were the same fire counted in seven pixels, so no calibration is meaningful before that step.
+
+The first calibration grid was 0.25°. It did not work: in Argentina most 0.25° cells hold a few counts a month, the shrinkage term pulls every one of them back to the regional ratio, and the cell multiplier becomes decoration. The deployed grid is 0.5°, which keeps 2,164 cells with enough signal to fit.
+
+For a while we read 2020 as a sensor artefact. It is the largest year in the raw series and it sits where S-NPP's swath geometry shifts, which is exactly the shape of the 2012 break. Leave-one-year-out settled it: in the harmonized series 2020 and 2021 stay on top (71,818 and 32,666 detections, against 38,382 in 2013), and the artefact year is 2012, where the raw count jumps ×3.7 while Aqua does not move. The chart annotation was rewritten after that, and 2020 is now labelled a real record year.
+
+Two models that lost are still in §3. N1, one global ratio on raw pixels, lands close to the adopted model at cell level (MAE 0.436 vs 0.444) and further away at region-month. We kept M3 and report N1.
 
 ## 1. Problem
 FIRMS records are fire **pixels**. Their count depends on pixel size, sensor sensitivity, overpass time and swath geometry as much as on fire activity:
@@ -87,14 +100,18 @@ Published raw VIIRS/MODIS ratios range 2.8–11× and depend on biome, season, d
   | M2 dedup seasonal | −0.1 % | 0.099 | 0.981 | 0.981 |
   | **M3 adopted** | **−1.3 %** | **0.095** | **0.984** | **0.985** |
 
-- **Results for the Philippines**, and the cell-level and Terra tables, are on the Method page and in `report.json`.
+- **Results for the Philippines**, and the Terra tables, are on the Method page and in `report.json`.
+- **Read the cell-level scores before trusting the headline.** At 0.5° cell-month level the adopted model is *not* the best: N1 scores MAE 0.436 and R² 0.761 against our 0.444 and 0.759. It wins where the app reports, region × month, and loses slightly per cell. If your use case is a single small cell, N1 is the better model and the app's wide intervals for small AOIs say the same thing.
 - **Aqua drift diagnostic** (observed Aqua ÷ VIIRS-derived Aqua-eq after 2021-07): this ratio wanders by up to ±20 %. Observed Aqua is no longer a stable reference after its orbit drift, which is why BRASA switches to VIIRS.
 
 ## 4. Limitations
 - Hotspots are not fires or burned area. Cloud and smoke cause omissions.
+- Cell-level skill is weak. The model is tuned for regions; a 0.5° cell prediction can be 50 % off and the interval is what carries the information.
 - Calibration is regional. Very small AOIs rely on shrunken cell ratios and have wide intervals.
-- Two regions are precomputed (Argentina, Philippines). The pipeline is country-agnostic.
-- The Terra → Aqua conversion is good at region level (R² 0.96 Argentina) but weak at cell level, because of the diurnal cycle. It affects only Nov 2000 – Jun 2002.
+- Two regions are precomputed (Argentina, Philippines). The pipeline is country-agnostic, but a third country needs a run, not a click.
+- The Terra → Aqua conversion is good at region level (R² 0.96 Argentina) but weak at cell level, because of the diurnal cycle. It only affects Nov 2000 – Jun 2002.
+- Aqua itself becomes unusable as a reference after 2021-07, and both MODIS platforms end in 2026–27. The 2000–2002 and post-2021 stretches are conversions, not observations, and they are the two weakest parts of the series.
+- 2026 is a partial year and is scored against the same days in past years only; the annual total for 2026 is not comparable to a full year.
 
 ## 5. References
 - Schroeder et al. (2014) *RSE* 143:85–96, doi:10.1016/j.rse.2013.12.008
@@ -121,3 +138,18 @@ Published raw VIIRS/MODIS ratios range 2.8–11× and depend on biome, season, d
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 15 Nov 2026 | Initial public release, built during the event |
+| 1.1 | 15 Nov 2026 | Added §0 (build history and dead ends), cell-level caveat, expanded limitations, AI section |
+
+## 8. Who wrote what, and where the assistants sat
+
+Worth stating plainly, because a two-person team shipping this in a weekend invites the question.
+
+Ours: the problem reading, the calibration design, the choice of Aqua as reference (from INPE's practice), the dedup step, the cell size, the model ladder, the interval construction, the outage rule, the app's information design, and every number in this document and in `report.json`. Those numbers come out of `pipeline/` on NASA data; they were not written down by a model and then trusted.
+
+The assistants:
+
+- **Claude Code** scaffolded boilerplate (polars module skeletons, Vite app shell), ran literature search, and produced first drafts of the prose in this file, in the README and on the Method page. Those drafts were edited by hand: §0 is the part a model would not have invented, because it is the record of our own wrong turns (2020 read as an artefact, the 0.25° grid that collapsed).
+- **Hermes Agent** handled repository mechanics during the event: history date normalisation, version history, deploy checks, deck build.
+- **Deck**: designed with AI assistance from screenshots of the running app. No AI imagery, video or voice, so nothing synthetic needs a label inside the app.
+
+If a claim here is wrong, it is wrong in the code too, and the code is what the numbers are reproduced from.
