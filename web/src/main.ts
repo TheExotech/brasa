@@ -194,6 +194,7 @@ function render() {
   if (!analysis) return;
   writeHash();
   syncControls();
+  renderBadges();
   renderKPIs();
   drawCalendar($('calendar'), analysis, {
     view: state.view, ramp: state.ramp, selected: state.sel, tooltip: $('tooltip'),
@@ -239,7 +240,7 @@ function renderKPIs() {
     const low = c.value < 3 && med < 3;
     const p = !low && med > 0 ? Math.round((c.value / med - 1) * 100) : null;
     const cls = p === null ? '' : p > 25 ? 'up' : p < -25 ? 'down' : '';
-    tiles.push(tile(S.kpiCurrent, low ? S.lowActivity : p === null ? fmt(c.value) : `${p >= 0 ? '+' : ''}${p}%`,
+    tiles.push(tile(S.kpiCurrent, low ? S.lowActivity : p === null ? fmt(c.value) : `${signed(p)}%`,
       `${S.monthsLong[c.month]} ${c.year}${c.partial ? ` (1–${a.current.days}, ${S.partial})` : ''}: ${fmt(c.value)} vs ${fmt(med)}`, cls));
   }
   if (a.peakYear) tiles.push(tile(S.kpiPeakYear, String(a.peakYear.year), fmt(a.peakYear.value)));
@@ -247,10 +248,30 @@ function renderKPIs() {
   if (s.length) tiles.push(tile(S.kpiSeason, s.length < 12 ? `${S.months[s.start]}–${S.months[s.end]}` : '—', `${S.peak} ${S.monthsLong[s.peak]}`));
   if (a.trend) {
     const sig = a.trend.p < 0.05;
-    tiles.push(tile(S.kpiTrend, `${a.trend.pctPerDecade >= 0 ? '+' : ''}${fmt(a.trend.pctPerDecade)}%`,
+    tiles.push(tile(S.kpiTrend, `${signed(Math.round(a.trend.pctPerDecade))}%`,
       `${S.perDecade} · p=${a.trend.p.toFixed(2)} (${sig ? S.significant : S.notSignificant})`, sig ? (a.trend.pctPerDecade > 0 ? 'up' : 'down') : ''));
   }
   $('kpis').innerHTML = tiles.join('');
+}
+
+/** Signed number with a typographic minus, e.g. +12, −30. */
+const signed = (v: number, digits = 0) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${fmt(Math.abs(v), digits)}`;
+
+/** Trust badges in the intro strip, read from the region's validation report. */
+function renderBadges() {
+  const S = t();
+  const rep = meta.report ?? {};
+  const val = rep.validation_viirs_loyo ?? {};
+  const adopted = Object.entries(val).find(([k]) => k.includes('adopted'))?.[1] as { region_month?: { r2_log1p: number; bias_pct: number } } | undefined;
+  const rm = adopted?.region_month;
+  const label = regions.find((r) => r.id === state.region)?.label[state.lang] ?? meta.name;
+  const last = new Date(meta.last_date + 'T00:00:00Z').toLocaleDateString(state.lang === 'es' ? 'es-AR' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  const items: string[] = [];
+  if (rm) items.push(`<li class="badge ok"><b>R² ${rm.r2_log1p.toFixed(2)} · bias ${signed(rm.bias_pct, 1)} %</b><span>${S.badgeValidated} · ${label}</span></li>`);
+  if (rep.n_detections) items.push(`<li class="badge"><b>${fmt(rep.n_detections)}</b><span>${S.badgeDetections} · ${label}</span></li>`);
+  items.push(`<li class="badge"><b>${last}</b><span>${S.badgeThrough} · MODIS C6.1 + VIIRS 375 m</span></li>`);
+  items.push(`<li class="badge link"><a href="./method.html">${S.howItWorks} →</a></li>`);
+  $('badges').innerHTML = items.join('');
 }
 
 const tile = (label: string, value: string, sub: string, cls = '') =>
@@ -510,6 +531,8 @@ async function boot() {
   applyLang();
   const info = regions.find((r) => r.id === state.region)!;
   fmap = new FireMap($('map'), info.bbox, effectiveBasemap());
+  fmap.map.once('load', () => $('map-wrap').classList.remove('is-loading'));
+  window.setTimeout(() => $('map-wrap').classList.remove('is-loading'), 20000); // never leave the placeholder stuck
   bind();
   // data loading does not wait for basemap tiles: layers are cached and installed on style load
   const keep = state.aoi.kind !== 'region';

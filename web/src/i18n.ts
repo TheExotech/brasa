@@ -94,6 +94,15 @@ const en = {
   peak: 'peak',
   lowActivity: 'Low activity',
   footer: 'Data: NASA FIRMS (MODIS C6.1, VIIRS S-NPP 375 m). Not an official NASA product.',
+  introTitle: 'One fire record from 2000 to today, whatever satellite saw it.',
+  introText: 'NASA FIRMS hotspots from MODIS (since 2000) and VIIRS (since 2012) are harmonized into one consistent monthly series. Pick an area to read its burning calendar, anomalies and trends.',
+  badgeValidated: 'cross-validated on held-out years',
+  badgeDetections: 'NASA FIRMS detections',
+  badgeThrough: 'Data through',
+  howItWorks: 'How it works',
+  source: 'Source',
+  builtFor: 'Built for the NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots · Team BRASA Dynamics',
+  loadingMap: 'Loading basemap…',
 };
 
 const es: typeof en = {
@@ -189,6 +198,15 @@ const es: typeof en = {
   peak: 'pico en',
   lowActivity: 'Baja actividad',
   footer: 'Datos: NASA FIRMS (MODIS C6.1, VIIRS S-NPP 375 m). No es un producto oficial de la NASA.',
+  introTitle: 'Un único registro de fuego desde 2000 hasta hoy, sin importar qué satélite lo vio.',
+  introText: 'Los focos de calor de NASA FIRMS de MODIS (desde 2000) y VIIRS (desde 2012) se armonizan en una serie mensual coherente. Elija un área para ver su calendario de quema, anomalías y tendencias.',
+  badgeValidated: 'validación cruzada con años excluidos',
+  badgeDetections: 'detecciones NASA FIRMS',
+  badgeThrough: 'Datos hasta',
+  howItWorks: 'Cómo funciona',
+  source: 'Código',
+  builtFor: 'Desarrollado para NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots · Equipo BRASA Dynamics',
+  loadingMap: 'Cargando mapa base…',
 };
 
 export const STRINGS = { en, es };
