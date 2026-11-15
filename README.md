@@ -128,7 +128,7 @@ Fire data: NASA FIRMS, MODIS Collection 6.1 and VIIRS 375 m (S-NPP, NOAA-20), St
 
 Not an official NASA product, no endorsement implied. A hotspot is a satellite detection of a fire pixel, not a confirmed fire and not burned area.
 
-## Use of AI / SI
+## Use of AI
 
 The problem, the harmonization design, the parameter choices and everything in `report.json` are ours. I built the pipeline and the app myself and ran every validation number in this README from that code.
 
